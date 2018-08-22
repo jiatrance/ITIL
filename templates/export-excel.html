@@ -1,0 +1,107 @@
+ {% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}<h1><i class="fa fa-list"></i> 导出事件</h1>{% endblock %}
+{% block crumb-items %}
+    <li class="breadcrumb-item">导出事件</li>
+{% endblock %}
+
+{% block content %}
+
+<div class="tab-pane" id="data_export"><!-- 标签页--4--数据导出 -->
+            <h4>导出条件选项</h4>
+            <form class="form-horizontal">
+            <div class="row">
+           <div class="col-md-6">
+          <div class="tile">
+               <div class="col-lg-11 ">
+                <div class="form-group row">
+                <label for="category" class="col-lg-3 control-label">故障类型</label>
+                   <div class="col-lg-9">
+                    <select class="form-control" id="category" name="category">
+                    <option value="all" selected="selected">ALL</option>
+                        {% for category in all_category %}
+                            <option value="{{ category.id }}">{{ category.case_type }}</option>
+                        {% endfor %}
+                    </select>
+                   </div>
+              </div>
+                <div class="form-group row">
+                <label for="priority" class="col-lg-3 control-label">优先级</label>
+                   <div class="col-lg-9">
+                    <select class="form-control" id="priority" name="priority">
+                    <option value="all" selected="selected">ALL</option>
+                        {% for priority in priorities %}
+                            <option value="{{ priority.id }}">{{ priority.priority }}</option>
+                        {% endfor %}
+                    </select>
+                   </div>
+              </div>
+                <div class="form-group row">
+                <label for="statue" class="col-lg-3 control-label">状态</label>
+                   <div class="col-lg-9">
+                    <select class="form-control" id="statue" name="statue">
+                    <option value="all" selected="selected">ALL</option>
+                        {% for statue in statues %}
+                            <option value="{{ statue.id }}">{{ statue.status }}</option>
+                        {% endfor %}
+                    </select>
+                   </div>
+              </div>
+                 <div class="form-group row">
+                <label for="receiver" class="col-lg-3 control-label">指派给</label>
+                   <div class="col-lg-9">
+                    <select class="form-control" id="receiver" name="receiver">
+                    <option value="all" selected="selected">ALL</option>
+                        {% for receiver in all_receiver %}
+                            <option value="{{ receiver.id }}">{{ receiver.name }}</option>
+                        {% endfor %}
+                    </select>
+                   </div>
+              </div>
+                 <div class="form-group row">
+                <label for="resolution_code" class="col-lg-3 control-label">解决类型</label>
+                   <div class="col-lg-9">
+                    <select class="form-control" id="resolution_code" name="resolution_code">
+                    <option value="all" selected="selected">ALL</option>
+                        {% for solution in all_resolution %}
+                                <option value="{{ solution.id }}">{{ solution.resolution_code }}</option>
+                        {% endfor %}
+                    </select>
+                   </div>
+              </div>
+               </div>
+                <div class="col-lg-1">
+                    <input type="button" id="sclj" value="生成链接" class="btn btn-primary btn-sm"/>
+                </div>
+            </div>
+           </div>
+            </div>
+
+            </form>
+            <dl>
+                <dt>导出数据模块操作说明:</dt>
+                <dd>请先选择导出条件,然后点击生成链接,最后在下方点击链接下载对应的用户清单数据</dd>
+            </dl>
+            <dl>
+                <dt>链接生成处:</dt>
+                <dd><a href="#" id="work_backup">空白链接</a>
+                </dd>
+            </dl>
+        </div>
+{% endblock %}
+
+{% block custem_script %}
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $('#sclj').click(function () {//数据导出链接
+                    tj1 = $("#category").val();
+                    tj2 = $("#priority").val();
+                    tj3 = $("#statue").val();
+                    tj4 = $("#receiver").val();
+                    tj5 = $("#resolution_code").val();
+                    $('#work_backup').attr('href', 'Excel-' + tj1 + '-' + tj2 + '-' + tj3 + '-' + tj4+ '-' + tj5);
+                    $('#work_backup').text('Excel-' + tj1 + '-' + tj2 + '-' + tj3 + '-' + tj4+ '-' + tj5);
+                });
+            })
+    </script>
+{% endblock %}

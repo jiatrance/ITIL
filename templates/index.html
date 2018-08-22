@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}<h1><i class="fa fa-dashboard"></i> 个人面板</h1>{% endblock %}
+{% block crumb-items %}
+        <li class="breadcrumb-item">个人面板</li>
+{% endblock %}
+{% block content %}
+      <div class="row">
+        <div class="col-md-6 col-lg-3">
+          <div class="widget-small primary coloured-icon"><i class="icon fa fa-user fa-3x"></i>
+            <div class="info">
+                <h4><a href="{% url 'order:my_work' %}" >我的事件</a></h4>
+                <p><b><a href="{% url 'order:my_work' %}" ><h2>{{ my_work.count }}</h2></a></b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="widget-small info coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+            <div class="info">
+                <h4><a href="{% url 'order:team_work' %}" >团队事件</a></h4>
+                <p><b><a href="{% url 'order:team_work' %}" ><h2>{{ team_work.count }}</h2></a></b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="widget-small warning coloured-icon"><i class="icon fa fa-star fa-3x"></i>
+            <div class="info">
+                <h4><a href="{% url 'order:all_unsigned' %}" >未指派事件</a></h4>
+                <p><b><a href="{% url 'order:all_unsigned' %}" ><h2>{{ unsigned.count }}</h2></a></b></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="widget-small danger coloured-icon"><i class="icon fa fa-exclamation-circle fa-3x"></i>
+            <div class="info">
+                <h4><a href="{% url 'order:all_urgent' %}" >紧急事件</a></h4>
+                <p><b><a href="{% url 'order:all_urgent' %}" ><h2>{{ all_urgent.count }}</h2></a></b></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 offset-3">
+         <div class="tile">
+            <h3 class="tile-title">概况</h3>
+            <div class="embed-responsive embed-responsive-16by9">
+              <canvas class="embed-responsive-item" id="pieChartDemo"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock %}
+
+{% block custem_script %}
+       <script type="text/javascript" src="{% static 'js/plugins/chart.js' %}"></script>
+        <script type="text/javascript">
+      var pdata = [
+      	{
+      		value: {{ all_urgent.count }},
+      		color:"#F7464A",
+      		highlight: "#FF5A5E",
+      		label: "紧急"
+      	},
+      	{
+      		value: {{ my_work.count }},
+      		color: "#46BFBD",
+      		highlight: "#5AD3D1",
+      		label: "我的"
+      	},
+      	{
+      		value: {{ unsigned.count }},
+      		color: "#FDB45C",
+      		highlight: "#FFC870",
+      		label: "未指派"
+      	},
+      	{
+      		value: {{ team_work.count }},
+      		color: "#17A2B8",
+      		highlight: "#23bfc2",
+      		label: "团队"
+      	}
+      ]
+
+      var ctxp = $("#pieChartDemo").get(0).getContext("2d");
+      var pieChart = new Chart(ctxp).Pie(pdata);
+    </script>
+{% endblock %}
